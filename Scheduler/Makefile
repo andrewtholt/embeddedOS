@@ -1,0 +1,18 @@
+
+CC=gcc
+CFLAGS=-g
+BINS=sched testSched2
+
+all:	$(BINS)
+
+sched:	sched.c sched.h
+	$(CC) $(CFLAGS) sched.c -o sched
+
+sched2.o:	sched2.c sched2.h
+	$(CC) $(CFLAGS) -c sched2.c -o sched2.o
+
+testSched2:	sched2.o testSched2.c
+	$(CC) $(CFLAGS)  sched2.o testSched2.c -o testSched2
+
+clean:
+	rm -f *.o $(BINS)
