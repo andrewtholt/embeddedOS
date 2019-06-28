@@ -1,7 +1,7 @@
 
 CC=gcc
 CFLAGS=-g
-BINS=sched testSched2
+BINS=testSched2 # sched 
 
 all:	$(BINS)
 
