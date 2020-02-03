@@ -21,7 +21,7 @@ void pushQueue(struct queueRoot* queue, int size, queue_data_type contents){
     item->contents = contents;
 
     if( queue->intId != NO_INT ) {
-        // Disable int
+        // Disable int, or acquire mutex.
     }
     item->next = NULL;
     if (queue->head == NULL){
@@ -33,7 +33,7 @@ void pushQueue(struct queueRoot* queue, int size, queue_data_type contents){
     queue->size++;
 
     if( queue->intId != NO_INT ) {
-        // Enable int
+        // Enable int, or release mutex.
     }
 }
 
@@ -44,7 +44,7 @@ queue_data_type popQueue(struct queueRoot* queue){
     } else {
 
         if( queue->intId != NO_INT ) {
-            // Disable int
+            // Disable int, or acquite mutex.
         }
         popped = queue->head->contents;
         struct queueName* next = queue->head->next;
@@ -58,7 +58,7 @@ queue_data_type popQueue(struct queueRoot* queue){
         }
 
         if( queue->intId != NO_INT ) {
-            // enable int
+            // enable int,or release mutex.
         }
     }
     return popped;
