@@ -7,7 +7,7 @@
 #include "sched2.h"
 #include "simpleQ.h"
 
-struct queueRoot root;
+struct queueRoot queueThread3;
 
 void thread1(void) {
     int count=0;
@@ -28,7 +28,7 @@ void thread2(void) {
     int idx=0;
     while (1) {
         // Put message in Q
-        pushQueue(&root, sizeof(void *), idx);
+        pushQueue(&queueThread3, sizeof(void *), (void *)idx);
         idx++;
         yield();
     }
@@ -39,10 +39,10 @@ void thread3(void) {
     while (1) {
 
         // Gte message from Q and print it
-        if( queueEmpty( &root ) ) {
+        if( queueEmpty( &queueThread3 ) ) {
             printf("thread 3:Q Empty\n");
         } else {
-            t = popQueue( &root );
+            t = (int)popQueue( &queueThread3 );
 
             printf("hread 3:%d\n",t);
         }
@@ -53,7 +53,7 @@ void thread3(void) {
 int main() {
     int i = 0;
     initThreadTable();
-    initQueue(&root, (uint8_t)0);
+    initQueue(&queueThread3, (uint8_t)0);
 
     run_queue_head = run_queue_tail = NO_THREAD;
     stack_swap_start = (STR) &i;
