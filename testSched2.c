@@ -42,6 +42,7 @@ int main() {
 
     if (!setjmp(new_thread_start_buff)) {
         /* starts three threads */
+
         startNewThread(thread1); // should error-check return value.
         startNewThread(thread2);
         startNewThread(thread3);

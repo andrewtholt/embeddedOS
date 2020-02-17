@@ -7,6 +7,8 @@
 #include "sched2.h"
 #include "simpleQ.h"
 
+#include "taskClass.h"
+
 struct queueRoot queueThread3;
 
 void thread1(void) {
@@ -60,6 +62,8 @@ int main() {
 
     if (!setjmp(new_thread_start_buff)) {
         /* starts three threads */
+
+        taskClass task1;
         startNewThread(thread1); // should error-check return value.
         startNewThread(thread2);
         startNewThread(thread3);

@@ -1,6 +1,10 @@
 #ifndef SCHED_HEAD
 #define SCHED_HEAD
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define MAX_THREAD              10
 #define THREAD_SWAP_STACK_SIZE  10000
 typedef short    int            THREAD_NUM;
@@ -59,4 +63,9 @@ void     queueThread          (THREAD_NUM threadNumber);
 void     unqueueThread        (UCHAR new_queue);
 static int getFreeThreadId() ;
 int freeThread(THREAD_NUM thread_num) ;
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif

@@ -1,7 +1,7 @@
 #ifndef __SIMPLE_Q
 #define __SIMPLE_Q
 
-#ifdef __coplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -36,8 +36,8 @@ bool queueEmpty( struct queueRoot *queue);
 // Return the front of the Q without removing it.
 queue_data_type peekQueue(struct queueRoot* queue);
 
-#ifdef __coplusplus
+#ifdef __cplusplus
 }
-
 #endif
+
 #endif
