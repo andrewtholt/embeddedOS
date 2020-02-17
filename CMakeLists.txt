@@ -11,6 +11,7 @@ include_directories(simpleQueue Scheduler)
 
 add_executable(testSched2 testSched2.c ${SCH_SOURCES})
 add_executable(testQ testQ.c ${Q_SOURCES})
+add_executable(testOS testOS.c ${Q_SOURCES} ${SCH_SOURCES})
 
 
 
