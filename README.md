@@ -5,7 +5,10 @@ Targetting, relatively, simple microcontrollers that require a scheduler and que
 To build.
 
 mkdir bin
+
 cd bin
+
 cmake ..
 
+make
 
