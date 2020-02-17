@@ -1,5 +1,10 @@
 #ifndef __SIMPLE_Q
 #define __SIMPLE_Q
+
+#ifdef __coplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 #define NO_INT (-1)
@@ -31,4 +36,8 @@ bool queueEmpty( struct queueRoot *queue);
 // Return the front of the Q without removing it.
 queue_data_type peekQueue(struct queueRoot* queue);
 
+#ifdef __coplusplus
+}
+
+#endif
 #endif

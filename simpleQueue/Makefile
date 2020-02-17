@@ -1,4 +1,4 @@
-
+CC=g++
 CFLAGS=-g
 
 BINS=testQ

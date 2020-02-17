@@ -17,7 +17,7 @@ void initQueue(struct queueRoot* queue, uint8_t irq) {
 }
 
 void pushQueue(struct queueRoot* queue, int size, queue_data_type contents){
-    struct queueName *item = malloc(size);
+    struct queueName *item = (struct queueName *)malloc(size);
     item->contents = contents;
 
     if( queue->intId != NO_INT ) {
