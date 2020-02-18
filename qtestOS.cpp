@@ -8,6 +8,8 @@
 
 #include <string.h>
 #include <iostream>
+
+#include <map>
 #include <queue>
 
 #define MAX_NAME (16)
@@ -29,7 +31,31 @@ struct msg {
 };
 using namespace std;
 
-queue<struct msg> queueIn3;
+// queue<struct msg> queueIn3;
+
+map<string, queue<struct msg> * >  pipe;
+
+bool threadReady(string name) {
+    bool ready = false;
+
+    if ( pipe.count(name) > 0) {
+        ready = true;
+    } else {
+        ready = false;
+    }
+    return ready;
+}
+
+void waitUntilReady(string name) {
+    bool ready=false;
+    do {
+        ready = threadReady(name);
+
+        if( ready == false) {
+            yield();
+        }
+    } while(ready == false) ;
+}
 
 void dumpMsg(struct msg *ptr) {
 
@@ -65,6 +91,14 @@ void thread2(void) {
     struct msg dataOut;
     int idx=0;
 
+    bool ready=false;
+
+    cout << "Thread3 " << pipe.count("THREAD3") << endl;
+
+    waitUntilReady("THREAD3");
+
+    queue<struct msg> *t3Q = pipe["THREAD3"];
+
     dataOut.cmd = PING;
     strcpy(dataOut.key, "TEST");
     strcpy(dataOut.data, "DATA");
@@ -72,7 +106,7 @@ void thread2(void) {
     while (1) {
         // Put message in Q
         sprintf(dataOut.data,"DATA%05d", idx++);
-        queueIn3.push(dataOut); 
+        t3Q->push(dataOut); 
 
 //        sprintf(dataOut.data,"DATA%05d", idx++);
 //        queueIn3.push(dataOut); 
@@ -83,14 +117,18 @@ void thread2(void) {
 
 void thread3(void) {
     struct msg dataIn;
+
+    queue<struct msg> *myQ = new queue<struct msg>;
+    pipe["THREAD3"] = myQ;
+
     while (1) {
 
         // Gte message from Q and print it
-        if(false == queueIn3.empty()) {
-            dataIn = queueIn3.front();
-            queueIn3.pop();
+        if(false == myQ->empty()) {
+            dataIn = myQ->front();
+            myQ->pop();
 
-            cout << "Q depth : " << queueIn3.size() << endl;
+            cout << "Q depth : " << myQ->size() << endl;
             dumpMsg(&dataIn);
         } else {
             cout << "T3 Empty" << endl;
