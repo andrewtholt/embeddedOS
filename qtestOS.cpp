@@ -31,8 +31,6 @@ struct msg {
 };
 using namespace std;
 
-// queue<struct msg> queueIn3;
-
 map<string, queue<struct msg> * >  pipe;
 
 bool threadReady(string name) {
@@ -75,7 +73,8 @@ void dumpMsg(struct msg *ptr) {
 
 void thread1(void) {
     int count=0;
-    while (1) {
+
+    while (true) {
         count++;
 
         if( (count % 2) == 0) {
@@ -93,8 +92,6 @@ void thread2(void) {
 
     bool ready=false;
 
-    cout << "Thread3 " << pipe.count("THREAD3") << endl;
-
     waitUntilReady("THREAD3");
 
     queue<struct msg> *t3Q = pipe["THREAD3"];
@@ -103,13 +100,12 @@ void thread2(void) {
     strcpy(dataOut.key, "TEST");
     strcpy(dataOut.data, "DATA");
 
-    while (1) {
+    while (true) {
+        //
         // Put message in Q
+        //
         sprintf(dataOut.data,"DATA%05d", idx++);
         t3Q->push(dataOut); 
-
-//        sprintf(dataOut.data,"DATA%05d", idx++);
-//        queueIn3.push(dataOut); 
 
         yield();
     }
@@ -121,9 +117,10 @@ void thread3(void) {
     queue<struct msg> *myQ = new queue<struct msg>;
     pipe["THREAD3"] = myQ;
 
-    while (1) {
-
+    while (true) {
+        //
         // Gte message from Q and print it
+        //
         if(false == myQ->empty()) {
             dataIn = myQ->front();
             myQ->pop();
