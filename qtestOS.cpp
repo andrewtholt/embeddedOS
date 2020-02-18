@@ -6,6 +6,7 @@
 #include <setjmp.h>
 #include "sched2.h"
 
+#include <iostream>
 #include <queue>
 
 using namespace std;
@@ -18,11 +19,10 @@ void thread1(void) {
         count++;
 
         if( (count % 2) == 0) {
-            printf("thread 1:even");
+            cout << "thread 1:Even" << endl;
         } else {
-            printf("thread 1:Odd");
+            cout << "thread 1:Odd" << endl;
         }
-        printf("\n");
         yield();
     }
 }
@@ -46,7 +46,9 @@ void thread3(void) {
             t=queueIn3.front();
             queueIn3.pop();
 
-            printf("t3 = %d\n", t);
+            cout << "t3 = " << t << endl;
+        } else {
+            cout << "T3 Empty" << endl;
         }
         yield();
     }
