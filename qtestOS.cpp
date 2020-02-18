@@ -5,9 +5,12 @@
 
 #include <setjmp.h>
 #include "sched2.h"
-#include "simpleQ.h"
 
-struct queueRoot queueThread3;
+#include <queue>
+
+using namespace std;
+
+queue<int> queueIn3;
 
 void thread1(void) {
     int count=0;
@@ -28,7 +31,7 @@ void thread2(void) {
     int idx=0;
     while (1) {
         // Put message in Q
-        pushQueue(&queueThread3, sizeof(void *), (void *)idx);
+        queueIn3.push(idx); 
         idx++;
         yield();
     }
@@ -39,12 +42,11 @@ void thread3(void) {
     while (1) {
 
         // Gte message from Q and print it
-        if( queueEmpty( &queueThread3 ) ) {
-            printf("thread 3:Q Empty\n");
-        } else {
-            t = (int)popQueue( &queueThread3 );
+        if(false == queueIn3.empty()) {
+            t=queueIn3.front();
+            queueIn3.pop();
 
-            printf("hread 3:%d\n",t);
+            printf("t3 = %d\n", t);
         }
         yield();
     }
@@ -53,7 +55,6 @@ void thread3(void) {
 int main() {
     int i = 0;
     initThreadTable();
-    initQueue(&queueThread3, (uint8_t)0);
 
     run_queue_head = run_queue_tail = NO_THREAD;
     stack_swap_start = (STR) &i;
