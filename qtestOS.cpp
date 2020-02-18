@@ -41,6 +41,9 @@ void dumpMsg(struct msg *ptr) {
         cout << "key  : EMPTY" << ptr->key << endl;
     }
     if(strlen(ptr->data) > 0) {
+        cout << "data : " << ptr->data << endl;
+    } else {
+        cout << "data : EMPTY" << ptr->data << endl;
     }
 }
 
