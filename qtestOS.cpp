@@ -129,8 +129,8 @@ void thread3(void) {
             dumpMsg(&dataIn);
         } else {
             cout << "T3 Empty" << endl;
+            yield();
         }
-        yield();
     }
 }
 
