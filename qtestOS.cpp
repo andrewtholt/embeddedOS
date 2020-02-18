@@ -41,9 +41,6 @@ void dumpMsg(struct msg *ptr) {
         cout << "key  : EMPTY" << ptr->key << endl;
     }
     if(strlen(ptr->data) > 0) {
-        cout << "data : " << ptr->data << endl;
-    } else {
-        cout << "data : EMPTY" << ptr->data << endl;
     }
 }
 
@@ -73,6 +70,10 @@ void thread2(void) {
         // Put message in Q
         sprintf(dataOut.data,"DATA%05d", idx++);
         queueIn3.push(dataOut); 
+
+//        sprintf(dataOut.data,"DATA%05d", idx++);
+//        queueIn3.push(dataOut); 
+
         yield();
     }
 }
@@ -85,6 +86,8 @@ void thread3(void) {
         if(false == queueIn3.empty()) {
             dataIn = queueIn3.front();
             queueIn3.pop();
+
+            cout << "Q depth : " << queueIn3.size() << endl;
             dumpMsg(&dataIn);
         } else {
             cout << "T3 Empty" << endl;
