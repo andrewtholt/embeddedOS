@@ -27,8 +27,8 @@ msg::msg()
 void msg::display() {
 
     std::cout << "Op code : " << cmd   << std::endl;
-    std::cout << "Key     : " << key   << std::endl;
-    std::cout << "Value   : " << value << std::endl;
+    std::cout << "Key     :>" << key   << "<" << std::endl;
+    std::cout << "Value   :>" << value << "<" << std::endl;
 }
 
 

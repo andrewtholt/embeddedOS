@@ -5,5 +5,9 @@
 using namespace std;
 
 int main() {
+
+    msg fred;
+
+    fred.display();
 }
 
