@@ -29,6 +29,7 @@ void msg::display() {
     std::cout << "Op code : " << cmd   << std::endl;
     std::cout << "Key     :>" << key   << "<" << std::endl;
     std::cout << "Value   :>" << value << "<" << std::endl;
+    std::cout << "===================" << std::endl;
 }
 
 
@@ -72,9 +73,8 @@ msg::setCmd(cmdOpcode c)
  * Returns: void
  * Effects: 
  ***********************************************************************/
-void
-msg::setKey(std::string k)
-{
+void msg::setKey(std::string k) {
+    key = k;
 }
 
 
@@ -84,9 +84,8 @@ msg::setKey(std::string k)
  * Returns: void
  * Effects: 
  ***********************************************************************/
-void
-msg::setValue(std::string v)
-{
+void msg::setValue(std::string v) {
+    value = v;
 }
 
 

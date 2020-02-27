@@ -9,5 +9,13 @@ int main() {
     msg fred;
 
     fred.display();
+
+    fred.display();
+
+    fred.setKey("TEST");
+    fred.display();
+
+    fred.setValue("VALUE");
+    fred.display();
 }
 
