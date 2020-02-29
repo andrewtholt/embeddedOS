@@ -25,6 +25,8 @@ msg::msg() {
  * Effects: 
  ***********************************************************************/
 void msg::display() {
+    std::cout << "Message Display" << std::endl;
+    std::cout << "===============" << std::endl;
     std::cout << "Op code : " << cmd ;
     std::cout << " is " << cmdToString() << std::endl;
     std::cout << "Key     :>" << key   << "<" << std::endl;
@@ -34,14 +36,47 @@ void msg::display() {
 
 
 /***********************************************************************
+ *  Method: msgPool::commonInit
+ *  Params: int max, int min
+ * Returns: void
+ * Effects: 
+ ***********************************************************************/
+void msgPool::commonInit() {
+    for(int i= 0 ; i< initialPoolSize; i++ ) {
+        thePool.push_back( new msg );
+    }
+}
+
+/***********************************************************************
  *  Method: msgPool::msgPool
  *  Params: 
  * Effects: 
  ***********************************************************************/
-msgPool::msgPool()
-{
+msgPool::msgPool() {
+    commonInit();
 }
 
+/***********************************************************************
+ *  Method: msgPool::msgPool
+ *  Params: int max
+ * Effects: 
+ ***********************************************************************/
+msgPool::msgPool(int max) {
+    maxPoolSize = max;
+    commonInit();
+}
+
+
+/***********************************************************************
+ *  Method: msgPool::msgPool
+ *  Params: int max, int min
+ * Effects: 
+ ***********************************************************************/
+msgPool::msgPool(int max, int min) {
+    maxPoolSize = max;
+    initialPoolSize = min;
+    commonInit();
+}
 
 /***********************************************************************
  *  Method: msgPool::display
@@ -49,9 +84,13 @@ msgPool::msgPool()
  * Returns: void
  * Effects: 
  ***********************************************************************/
-    void
-msgPool::display()
-{
+void msgPool::display() {
+    std::cout << "Pool Display" << std::endl;
+    std::cout << "============" << std::endl;
+
+    std::cout << "Capacity  : " << int( getCapacity() ) << std::endl;
+    std::cout << "Available : " << int( thePool.size() ) << std::endl;
+    std::cout << "============" << std::endl;
 }
 
 
@@ -198,6 +237,92 @@ std::string msg::cmdToString() {
             break;
     }
     return command;
+}
+
+
+/***********************************************************************
+ *  Method: msgPool::poolSize
+ *  Params: 
+ * Returns: int
+ * Effects: 
+ ***********************************************************************/
+int msgPool::poolSize() {
+    return thePool.size();
+}
+
+
+/***********************************************************************
+ *  Method: msgPool::getMsg
+ *  Params: 
+ * Returns: msg *
+ * Effects: 
+ ***********************************************************************/
+msg *msgPool::getMsg() {
+    
+    msg *ptr = nullptr;
+
+    if( thePool.size() > 0) {
+        ptr = thePool.front();
+        thePool.pop_front();
+    } 
+
+    if( thePool.size() == 0) {
+        if( capacity < maxPoolSize ) {
+            thePool.push_back( new msg );
+            capacity++;
+        }
+    }
+    return ptr;
+}
+
+
+/***********************************************************************
+ *  Method: msgPool::returnMsg
+ *  Params: msg *p
+ * Returns: void
+ * Effects: 
+ ***********************************************************************/
+void msgPool::returnMsg(msg *p) {
+    p->clear();
+
+    thePool.push_back( p );
+}
+
+
+/***********************************************************************
+ *  Method: msgPool::getCapacity
+ *  Params: 
+ * Returns: int
+ * Effects: 
+ ***********************************************************************/
+int msgPool::getCapacity() {
+    return capacity;
+}
+
+
+/***********************************************************************
+ *  Method: msgPool::setMaxMessages
+ *  Params: int m
+ * Returns: void
+ * Effects: Increase the maximum pool size.
+ ***********************************************************************/
+void msgPool::increaseMaxMessages(int m) {
+    maxPoolSize += m;
+}
+
+
+/***********************************************************************
+ *  Method: msgPool::preAllocateMax
+ *  Params: 
+ * Returns: void
+ * Effects: Pre-allocates 'maxPoolSize' empty messages.
+ ***********************************************************************/
+void msgPool::preAllocateMax() {
+    if( capacity < maxPoolSize ) {
+        for(int i = 0; i < (maxPoolSize - capacity); i++) {
+            thePool.push_back( new msg );
+        }
+    }
 }
 
 

@@ -30,5 +30,8 @@ add_executable(qtestOS qtestOS.cpp ${SCH_SOURCES} )
 add_executable(msgTst msgTst.cpp )
 target_link_libraries(msgTst PUBLIC utils)
 
+add_executable(msgPoolTst msgPoolTst.cpp )
+target_link_libraries(msgPoolTst PUBLIC utils)
+
 
 
