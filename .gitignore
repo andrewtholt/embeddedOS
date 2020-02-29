@@ -2,3 +2,5 @@ bin
 cscope.out
 Debug
 Release
+*.swp
+*.o

@@ -19,6 +19,8 @@ class msg {
         std::string value;
         // msgId id;
 
+        std::string cmdToString();
+
     public:
         msg();
         void setCmd(cmdOpcode c);
@@ -32,6 +34,9 @@ class msg {
         void clear();
 
         void display();
+
+        int serialize(uint8_t *ptr, int maxLen);
+
 };
 
 class msgPool {

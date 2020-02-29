@@ -5,6 +5,7 @@
  *  DESCR: 
  ***********************************************************************/
 #include "msgClass.h"
+#include <string.h>
 
 #include <iostream>
 
@@ -13,8 +14,7 @@
  *  Params: 
  * Effects: 
  ***********************************************************************/
-msg::msg()
-{
+msg::msg() {
 }
 
 
@@ -25,8 +25,8 @@ msg::msg()
  * Effects: 
  ***********************************************************************/
 void msg::display() {
-
-    std::cout << "Op code : " << cmd   << std::endl;
+    std::cout << "Op code : " << cmd ;
+    std::cout << " is " << cmdToString() << std::endl;
     std::cout << "Key     :>" << key   << "<" << std::endl;
     std::cout << "Value   :>" << value << "<" << std::endl;
     std::cout << "===================" << std::endl;
@@ -49,7 +49,7 @@ msgPool::msgPool()
  * Returns: void
  * Effects: 
  ***********************************************************************/
-void
+    void
 msgPool::display()
 {
 }
@@ -61,9 +61,8 @@ msgPool::display()
  * Returns: void
  * Effects: 
  ***********************************************************************/
-void
-msg::setCmd(cmdOpcode c)
-{
+void msg::setCmd(cmdOpcode c) {
+    cmd = c;
 }
 
 
@@ -95,9 +94,8 @@ void msg::setValue(std::string v) {
  * Returns: cmdOpcode
  * Effects: 
  ***********************************************************************/
-cmdOpcode
-msg::getCmd()
-{
+cmdOpcode msg::getCmd() {
+    return cmd;
 }
 
 
@@ -107,9 +105,8 @@ msg::getCmd()
  * Returns: std::string
  * Effects: 
  ***********************************************************************/
-std::string
-msg::getKey()
-{
+std::string msg::getKey() {
+    return key;
 }
 
 
@@ -119,9 +116,8 @@ msg::getKey()
  * Returns: std::string
  * Effects: 
  ***********************************************************************/
-std::string
-msg::getValue()
-{
+std::string msg::getValue() {
+    return value;
 }
 
 
@@ -135,6 +131,73 @@ void msg::clear() {
     cmd = NOP;
     key = "";
     value = "";
+}
+
+
+/***********************************************************************
+ *  Method: msg::serialize
+ *  Params: uint8_t *ptr
+ * Returns: int
+ * Effects: Copy the data into a buffer for transmission.  Return length
+ *  of data or < 0 on error.
+ *
+ ***********************************************************************/
+int msg::serialize(uint8_t *ptr, int maxLen) {
+    int len=0;
+    int idx = 0;
+
+    memset(ptr, 0, maxLen);
+
+    int keyLen=key.length();
+    int valueLen=value.length();
+
+    ptr[idx++] = cmd;
+    ptr[idx++] = keyLen;
+
+    strncpy( (char *)&ptr[idx], key.c_str(), keyLen);
+    idx += keyLen ;
+
+    if ( cmd == SET ) {
+        ptr[idx++] = valueLen;
+        strncpy( (char *)&ptr[idx], value.c_str(), valueLen);
+        idx += valueLen;
+    }
+
+    return idx;
+}
+
+
+/***********************************************************************
+ *  Method: msg::cmdToString
+ *  Params: 
+ * Returns: std::string
+ * Effects: 
+ ***********************************************************************/
+std::string msg::cmdToString() {
+
+    std::string command = "";
+
+    switch(cmd) {
+        case NOP:
+            command = "NOP";
+            break;
+        case GET:
+            command = "GET";
+            break;
+        case SET:
+            command = "SET";
+            break;
+        case SUB:
+            command = "SUB";
+            break;
+        case UNSUB:
+            command = "UNSUB";
+            break;
+        default:
+            command = "UNKNOWN";
+            break;
+    }
+    return command;
 }
 
 

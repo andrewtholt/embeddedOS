@@ -35,14 +35,14 @@ void thread2(void) {
 }
 
 void thread3(void) {
-    int t=0;
+    void *t=NULL;
     while (1) {
 
-        // Gte message from Q and print it
+        // Get message from Q and print it
         if( queueEmpty( &queueThread3 ) ) {
             printf("thread 3:Q Empty\n");
         } else {
-            t = (int)popQueue( &queueThread3 );
+            t = (void *)popQueue( &queueThread3 );
 
             printf("hread 3:%d\n",t);
         }
