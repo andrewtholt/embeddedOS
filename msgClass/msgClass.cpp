@@ -177,29 +177,34 @@ void msg::clear() {
  *  Method: msg::serialize
  *  Params: uint8_t *ptr
  * Returns: int
- * Effects: Copy the data into a buffer for transmission.  Return length
- *  of data or < 0 on error.
+ * Effects: Copy the data into a caller provided buffer for transmission.
+ *      Return length of data or < 0 on error.
  *
  ***********************************************************************/
 int msg::serialize(uint8_t *ptr, int maxLen) {
     int len=0;
-    int idx = 0;
+    int idx = -1;
 
-    memset(ptr, 0, maxLen);
+    bool validCmd = ( cmd == NOP ||cmd == GET || cmd == SET || cmd == SUB || cmd == UNSUB) ;
 
-    int keyLen=key.length();
-    int valueLen=value.length();
+    if( validCmd ) {
 
-    ptr[idx++] = cmd;
-    ptr[idx++] = keyLen;
+        memset(ptr, 0, maxLen);
 
-    strncpy( (char *)&ptr[idx], key.c_str(), keyLen);
-    idx += keyLen ;
+        int keyLen=key.length();
+        int valueLen=value.length();
 
-    if ( cmd == SET ) {
-        ptr[idx++] = valueLen;
-        strncpy( (char *)&ptr[idx], value.c_str(), valueLen);
-        idx += valueLen;
+        ptr[idx++] = cmd;
+        ptr[idx++] = keyLen;
+
+        strncpy( (char *)&ptr[idx], key.c_str(), keyLen);
+        idx += keyLen ;
+
+        if ( cmd == SET ) {
+            ptr[idx++] = valueLen;
+            strncpy( (char *)&ptr[idx], value.c_str(), valueLen);
+            idx += valueLen;
+        }
     }
 
     return idx;
@@ -258,7 +263,7 @@ int msgPool::poolSize() {
  * Effects: 
  ***********************************************************************/
 msg *msgPool::getMsg() {
-    
+
     msg *ptr = nullptr;
 
     if( thePool.size() > 0) {
