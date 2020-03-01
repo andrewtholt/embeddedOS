@@ -8,8 +8,8 @@
 
 enum cmdOpcode {
     NOP=0,
-    GET,
     SET,
+    GET,
     SUB,
     UNSUB
 };
@@ -17,6 +17,7 @@ enum cmdOpcode {
 class msg {
     private:
         cmdOpcode cmd;
+        std::string sender;
         std::string key;
         std::string value;
         // msgId id;
@@ -26,20 +27,24 @@ class msg {
     public:
         msg();
         void setCmd(cmdOpcode c);
+        void setSender(std::string s);
         void setKey(std::string k);
         void setValue(std::string v);
 
         cmdOpcode getCmd();
+        std::string getSender();
         std::string getKey();
         std::string getValue();
         
-        void set(cmdOpcode c, std::string k, std::string v);
+        void set(cmdOpcode c,std::string s, std::string k, std::string v);
 
         void clear();
 
         void display();
 
-        int serialize(uint8_t *ptr, int maxLen);
+        int serialize(uint8_t *ptr, int maxLen);  // Returns length, or < 0 on error.
+        
+        int deSerialize(uint8_t *ptr, int maxLen);  // Returns length, or < 0 on error.
 
 };
 

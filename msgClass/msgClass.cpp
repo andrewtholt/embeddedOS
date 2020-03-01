@@ -29,9 +29,10 @@ void msg::display() {
     std::cout << "===============" << std::endl;
     std::cout << "Op code : " << cmd ;
     std::cout << " is " << cmdToString() << std::endl;
-    std::cout << "Key     :>" << key   << "<" << std::endl;
-    std::cout << "Value   :>" << value << "<" << std::endl;
-    std::cout << "===================" << std::endl;
+    std::cout << "Sender  :>" << sender << "<" << std::endl;
+    std::cout << "Key     :>" << key    << "<" << std::endl;
+    std::cout << "Value   :>" << value  << "<" << std::endl;
+    std::cout << "==================="  << std::endl;
 }
 
 
@@ -183,7 +184,7 @@ void msg::clear() {
  ***********************************************************************/
 int msg::serialize(uint8_t *ptr, int maxLen) {
     int len=0;
-    int idx = -1;
+    int idx = 0;
 
     bool validCmd = ( cmd == NOP ||cmd == GET || cmd == SET || cmd == SUB || cmd == UNSUB) ;
 
@@ -191,12 +192,16 @@ int msg::serialize(uint8_t *ptr, int maxLen) {
 
         memset(ptr, 0, maxLen);
 
-        int keyLen=key.length();
-        int valueLen=value.length();
+        uint8_t senderLen=sender.length();
+        uint8_t keyLen   =key.length();
+        uint8_t valueLen =value.length();
 
-        ptr[idx++] = cmd;
+        ptr[idx++] = (uint8_t)cmd;
+        ptr[idx++] = senderLen;
+        strncpy( (char *)&ptr[idx], sender.c_str(), senderLen);
+        idx += senderLen ;
+        
         ptr[idx++] = keyLen;
-
         strncpy( (char *)&ptr[idx], key.c_str(), keyLen);
         idx += keyLen ;
 
@@ -208,6 +213,38 @@ int msg::serialize(uint8_t *ptr, int maxLen) {
     }
 
     return idx;
+}
+
+/***********************************************************************
+ *  Method: msg::deSerialize
+ *  Params: uint8_t *ptr, int maxLen
+ * Returns: int
+ * Effects: Takse a serialised message and unpacks it into the fields.
+ ***********************************************************************/
+int msg::deSerialize(uint8_t *ptr, int maxLen) {
+    int idx = 0;
+    
+    cmdOpcode c = (cmdOpcode) ptr[idx++];
+    uint8_t senderLen = (uint8_t) ptr[idx++];
+    
+    std::string sender( (char *)&ptr[idx], senderLen);
+    idx += senderLen ;
+   
+    uint8_t localKeyLen = (uint8_t) ptr[idx++];
+    std::string localKey( (char *)&ptr[idx], localKeyLen);
+    idx += localKeyLen ;
+   
+    uint8_t localValueLen = (uint8_t) ptr[idx++];
+    std::string localValue( (char *)&ptr[idx], localValueLen);
+    idx += localValueLen ;
+    
+    
+    std::cout << "======" << std::endl;
+    std::cout << sender << std::endl;
+    std::cout << localKey << std::endl;
+    std::cout << localValue << std::endl;
+    std::cout << "======" << std::endl;
+    
 }
 
 
@@ -333,14 +370,38 @@ void msgPool::preAllocateMax() {
 
 /***********************************************************************
  *  Method: msg::set
- *  Params: cmdOpcode c, std::string k, std::string v
+ *  Params: cmdOpcode c, std::string s, std::string k, std::string v
  * Returns: void
  * Effects: 
  ***********************************************************************/
-void msg::set(cmdOpcode c, std::string k, std::string v) {
-    cmd   = c;
-    key   = k;
-    value = v;
+void msg::set(cmdOpcode c, std::string s, std::string k, std::string v) {
+    cmd    = c;
+    sender = s;
+    key    = k;
+    value  = v;
+}
+
+
+
+/***********************************************************************
+ *  Method: msg::setSender
+ *  Params: std::string s
+ * Returns: void
+ * Effects: 
+ ***********************************************************************/
+void msg::setSender(std::string s) {
+    sender =s;
+}
+
+
+/***********************************************************************
+ *  Method: msg::getSender
+ *  Params: 
+ * Returns: std::string
+ * Effects: 
+ ***********************************************************************/
+std::string msg::getSender() {
+    return sender;
 }
 
 

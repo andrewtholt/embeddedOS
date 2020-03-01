@@ -14,6 +14,8 @@
 
 #include "msgClass.h"
 
+#include "myDatabase.h"
+
 using namespace std;
 map<string, queue<msg *> *>  pipe;
 
@@ -46,6 +48,9 @@ void waitUntilReady(string name) {
 void thread1(void) {
     int count=0;
     
+    queue<msg *> *myQ = new queue<msg *>;
+    pipe["THREAD1"] = myQ;
+    
     while (true) {
         count++;
         
@@ -62,7 +67,12 @@ void thread1(void) {
 void thread2(void) {
     int idx=0;
     
+    string iam = "THREAD2";
+    
     bool ready=false;
+    
+    queue<msg *> *myQ = new queue<msg *>;
+    pipe[iam] = myQ;
     
     waitUntilReady("THREAD3");
     
@@ -77,7 +87,7 @@ void thread2(void) {
         
         if(ptr != nullptr) {
             
-            ptr->set(SET, "COUNT", to_string(idx++));
+            ptr->set(SET, iam, "COUNT", to_string(idx++));
             
             t3Q->push(ptr); 
         } else {
@@ -90,8 +100,13 @@ void thread2(void) {
 
 void thread3(void) {
     
+    string iam = "THREAD3";
     queue<msg *> *myQ = new queue<msg *>;
-    pipe["THREAD3"] = myQ;
+    pipe[iam] = myQ;
+    
+    myDatabase myData;
+    
+    myData.display();
     
     msg *dataIn;
     while (true) {
@@ -103,6 +118,11 @@ void thread3(void) {
             myQ->pop();
             
             dataIn->display();
+            
+            string k = dataIn->getKey();
+            string v = dataIn->getValue();
+            
+            myData.add(k,v);
             
             pool.returnMsg(dataIn);
         }

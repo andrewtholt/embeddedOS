@@ -19,6 +19,7 @@ int main() {
 
     fred.setCmd(SET);
     fred.setKey("TEST");
+    fred.setSender("IAM");
     fred.display();
 
     fred.setValue("VALUE");
@@ -27,6 +28,8 @@ int main() {
     len = fred.serialize( buffer, BUFF_SIZE );
     cout << "Length = " << int(len) << endl;
     mdump( buffer, 32 );
+    
+    len = fred.deSerialize( buffer, BUFF_SIZE );
 
     fred.clear();
     fred.display();
@@ -38,6 +41,7 @@ int main() {
     len = fred.serialize( buffer, BUFF_SIZE );
     cout << "Length = " << int(len) << endl;
     mdump( buffer, 32 );
+
 
 }
 
