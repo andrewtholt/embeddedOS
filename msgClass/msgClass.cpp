@@ -331,3 +331,16 @@ void msgPool::preAllocateMax() {
 }
 
 
+/***********************************************************************
+ *  Method: msg::set
+ *  Params: cmdOpcode c, std::string k, std::string v
+ * Returns: void
+ * Effects: 
+ ***********************************************************************/
+void msg::set(cmdOpcode c, std::string k, std::string v) {
+    cmd   = c;
+    key   = k;
+    value = v;
+}
+
+

@@ -32,6 +32,8 @@ class msg {
         cmdOpcode getCmd();
         std::string getKey();
         std::string getValue();
+        
+        void set(cmdOpcode c, std::string k, std::string v);
 
         void clear();
 

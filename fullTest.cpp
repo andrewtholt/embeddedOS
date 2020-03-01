@@ -22,7 +22,7 @@ msgPool pool;
 
 bool threadReady(string name) {
     bool ready = false;
-
+    
     if ( pipe.count(name) > 0) {
         ready = true;
     } else {
@@ -35,7 +35,7 @@ void waitUntilReady(string name) {
     bool ready=false;
     do {
         ready = threadReady(name);
-
+        
         if( ready == false) {
             yield();
         }
@@ -45,51 +45,54 @@ void waitUntilReady(string name) {
 
 void thread1(void) {
     int count=0;
-
+    
     while (true) {
         count++;
-
+        
         if( (count % 2) == 0) {
             cout << "thread 1:Even" << endl;
         } else {
             cout << "thread 1:Odd" << endl;
         }
-
+        
         yield();
     }
 }
 
 void thread2(void) {
     int idx=0;
-
+    
     bool ready=false;
-
+    
     waitUntilReady("THREAD3");
-
+    
     queue<msg *> *t3Q ;
     t3Q = pipe["THREAD3"];
-
+    
     while (true) {
         //
         // Put message in Q
         //
-        msg *ptr = pool.getMsg();
-        ptr->setCmd(SET);
-        ptr->setKey("COUNT");
-
-        ptr->setValue( to_string(idx++));
+        msg *ptr = pool.getMsg(); 
         
-        t3Q->push(ptr); 
-
+        if(ptr != nullptr) {
+            
+            ptr->set(SET, "COUNT", to_string(idx++));
+            
+            t3Q->push(ptr); 
+        } else {
+            cout << "Message pool empty" << endl;
+        }
+        
         yield();
     }
 }
 
 void thread3(void) {
-
+    
     queue<msg *> *myQ = new queue<msg *>;
     pipe["THREAD3"] = myQ;
-
+    
     msg *dataIn;
     while (true) {
         //
@@ -100,6 +103,8 @@ void thread3(void) {
             myQ->pop();
             
             dataIn->display();
+            
+            pool.returnMsg(dataIn);
         }
         yield();
     }
@@ -107,15 +112,15 @@ void thread3(void) {
 
 int main() {
     int i = 0;
-
+    
     initThreadTable();
-
+    
     run_queue_head = run_queue_tail = NO_THREAD;
     stack_swap_start = (STR) &i;
-
+    
     if (!setjmp(new_thread_start_buff)) {
         /* starts three threads */
-
+        
         startNewThread(thread1); // should error-check return value.
         startNewThread(thread2);
         startNewThread(thread3);
