@@ -225,10 +225,10 @@ int msg::deSerialize(uint8_t *ptr, int maxLen) {
     int idx = 0;
     
     cmdOpcode c = (cmdOpcode) ptr[idx++];
-    uint8_t senderLen = (uint8_t) ptr[idx++];
+    uint8_t localSenderLen = (uint8_t) ptr[idx++];
     
-    std::string sender( (char *)&ptr[idx], senderLen);
-    idx += senderLen ;
+    std::string localSender( (char *)&ptr[idx], localSenderLen);
+    idx += localSenderLen ;
    
     uint8_t localKeyLen = (uint8_t) ptr[idx++];
     std::string localKey( (char *)&ptr[idx], localKeyLen);
@@ -240,7 +240,7 @@ int msg::deSerialize(uint8_t *ptr, int maxLen) {
     
     
     std::cout << "======" << std::endl;
-    std::cout << sender << std::endl;
+    std::cout << localSender << std::endl;
     std::cout << localKey << std::endl;
     std::cout << localValue << std::endl;
     std::cout << "======" << std::endl;
