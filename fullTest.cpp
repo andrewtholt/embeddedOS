@@ -48,7 +48,6 @@ void thread1(void) {
 
     while (true) {
         count++;
-        
 
         if( (count % 2) == 0) {
             cout << "thread 1:Even" << endl;
