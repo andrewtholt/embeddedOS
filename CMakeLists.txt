@@ -26,8 +26,11 @@ add_executable(testOS testOS.cpp ${Q_SOURCES} ${SCH_SOURCES} )
 target_link_libraries(testOS PUBLIC utils)
 
 add_executable(qtestOS qtestOS.cpp ${SCH_SOURCES} )
+add_executable(fullTest fullTest.cpp ${SCH_SOURCES} )
+target_link_libraries(fullTest PUBLIC utils)
 
 add_executable(msgTst msgTst.cpp )
+
 target_link_libraries(msgTst PUBLIC utils)
 
 add_executable(msgPoolTst msgPoolTst.cpp )
