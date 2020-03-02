@@ -54,8 +54,8 @@ void database::setPubPolicy(std::string key, uint8_t policy) {
  * Returns: std::set<void *>
  * Effects: 
  ***********************************************************************/
-std::set<void *> *database::getSubscriber(std::string key) {
-    std::set<void *> *s = NULL;
+std::set<std::string> *database::getSubscriber(std::string key) {
+    std::set<std::string> *s = NULL;
 
     if( data.count( key ) == 1 ) {
        s = data[key]->getSubscriber();
@@ -78,7 +78,7 @@ database::database()
  *  Method: database::add
  *  Params: std::string key, std::string v
  * Returns: bool
- * Effects: 
+ * Effects: Return true if the value had to be created, otherwise false.
  ***********************************************************************/
 bool database::add(std::string key, std::string v) {
 
@@ -123,7 +123,8 @@ std::string database::get(std::string key) {
  * Returns: void
  * Effects: 
  ***********************************************************************/
-void database::sub(void *id, std::string key) {
+// void database::sub(void *id, std::string key) {
+void database::sub(std::string id, std::string key) {
 
     if( data.count( key ) == 1 ) {
         data[key]->addSubscriber( id );
@@ -137,9 +138,7 @@ void database::sub(void *id, std::string key) {
  * Returns: void
  * Effects: 
  ***********************************************************************/
-void
-database::unsub(void *id, std::string key)
-{
+void database::unsub(std::string id, std::string key) {
 }
 
 
@@ -158,7 +157,7 @@ void database::display() {
 
 }
 
-void database::act( const void *id, const std::string key, const std::string value) {
+void database::act( const std::string id, const std::string key, const std::string value) {
 }
 
 

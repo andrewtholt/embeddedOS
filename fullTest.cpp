@@ -80,21 +80,24 @@ void thread2(void) {
     queue<msg *> *t3Q ;
     t3Q = pipe["THREAD3"];
     
+    msg *ptr = pool.getMsg(); 
+    ptr->set(SUB, iam, "THREAD_TEST", "");
+    t3Q->push(ptr); 
+
     while (true) {
         //
         // Put message in Q
         //
-        msg *ptr = pool.getMsg(); 
+        /*
+        ptr = pool.getMsg(); 
         
         if(ptr != nullptr) {
-            
             ptr->set(SET, iam, "COUNT", to_string(idx++));
-            
             t3Q->push(ptr); 
         } else {
             cout << "Message pool empty" << endl;
         }
-        
+        */
         yield();
     }
 }
@@ -131,6 +134,7 @@ void thread3(void) {
             dataIn->display();
             
             cmdOpcode c = dataIn->getCmd();
+            string from = dataIn->getSender();
             string k = dataIn->getKey();
             string v = dataIn->getValue();
             
@@ -141,6 +145,8 @@ void thread3(void) {
                 case GET:
                     break;
                 case SUB:
+                    cout << "SUB " << k << endl;
+                    myData.sub(from, k);
                     break;
                 case UNSUB:
                     break;

@@ -2,18 +2,16 @@
 #include "myDatabase.h"
 
 
-void myDatabase::act( const void *id, const std::string key, std::string value) {
-        printf("PUBLISH ID  : %04x\n", id);
+void myDatabase::act( const std::string id, const std::string key, std::string value) {
+        printf("PUBLISH ID  : %s\n", id.c_str());
         printf("       KEY  : %s\n", key.c_str());
         printf("       VALUE: %s\n", value.c_str());
 }
 
 void myDatabase::doPublish(std::string key) {
 
-    const std::set<void *> *ptr = getSubscriber(key); 
+    const std::set<std::string> *ptr = getSubscriber(key); 
     const std::string value = get(key);
-
-//    std::set<void *> ptr = getSubscriber( key) ;
 
     if( ptr->size() > 0 ) {
         for( auto id : *ptr ) {
@@ -25,8 +23,8 @@ void myDatabase::doPublish(std::string key) {
 bool myDatabase::add(std::string k, std::string v) {
     std::cout << "Here" << std::endl;
     
-    bool f = database::add(k,v);
-    bool pub = false;
+    bool f = database::add(k,v);  // True if created.
+    bool pub = true;
 
     // Changed
     uint8_t p = getPubPolicy(k);
@@ -50,6 +48,8 @@ bool myDatabase::add(std::string k, std::string v) {
 
             break;
     }
+
+    pub = true;
 
     if( pub ) {
         doPublish(k);

@@ -10,7 +10,7 @@ class myDatabase : public database {
         void doPublish(std::string key);
     public:
         bool add(std::string, std::string) ;
-        void act( const void *id, const std::string key, std::string value) ;
+        void act( const std::string id, const std::string key, std::string value) ;
 }; 
 
 #endif

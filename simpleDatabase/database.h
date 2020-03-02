@@ -28,12 +28,13 @@ class dbValue {
 
         uint8_t pubPolicy;
 
-        std::set<void *> *subscriber;
+        std::set<std::string> *subscriber;
+//        std::set<std::string> subscriber;
     public:
         dbValue(std::string v ) {
             value = v;
 
-            subscriber = new std::set<void *>;
+            subscriber = new std::set<std::string>;
 
         }
         void setValue(std::string v) {
@@ -52,11 +53,11 @@ class dbValue {
             return pubPolicy;
         }
 
-        std::set<void *> *getSubscriber() {
+        std::set<std::string> *getSubscriber() {
             return subscriber;
         }
 
-        void addSubscriber( void *id) {
+        void addSubscriber(std::string id) {
             subscriber->insert( id );
         }
 
@@ -88,18 +89,18 @@ class database {
         uint8_t getPubPolicy(std::string key);
         void    setPubPolicy(std::string key, uint8_t policy);
 
-        std::set<void *> *getSubscriber(std::string key);
+        std::set<std::string> *getSubscriber(std::string key);
         database();
 
         bool add(std::string key, std::string v);
         std::string get(std::string key);
 
-        void sub(void *id, std::string key);
-        void unsub(void *id, std::string key);
+        void sub(std::string id, std::string key);
+        void unsub(std::string id, std::string key);
 
         void display();
 
-       void act(const void *id, const std::string key, const std::string value);
+       void act(const std::string id, const std::string key, const std::string value);
 
 };
 

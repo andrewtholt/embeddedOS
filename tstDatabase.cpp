@@ -8,18 +8,18 @@ class myDatabase : public database {
         void doPublish(std::string key);
     public:
         bool add(std::string, std::string) ;
-        void act( const void *id, const std::string key, std::string value) ;
+        void act( const std::string id, const std::string key, std::string value) ;
 }; 
 
-void myDatabase::act( const void *id, const std::string key, std::string value) {
-        printf("PUBLISH ID  : %04x\n", id);
+void myDatabase::act( const std::string id, const std::string key, std::string value) {
+        printf("PUBLISH ID  : %s\n", id.c_str());
         printf("       KEY  : %s\n", key.c_str());
         printf("       VALUE: %s\n", value.c_str());
 }
 
 void myDatabase::doPublish(std::string key) {
 
-    const std::set<void *> *ptr = getSubscriber(key); 
+    const std::set<std::string> *ptr = getSubscriber(key); 
     const std::string value = get(key);
 
 //    std::set<void *> ptr = getSubscriber( key) ;
@@ -92,7 +92,7 @@ int main() {
 
     cout << unsigned(tst++) << "  " << updated << endl;
 
-    db.sub( (void *)1, "TEST" );
+    db.sub( "1", "TEST" );
     updated = db.add("TEST","MORE DATA");
     db.display();
     exit(0);
@@ -110,7 +110,7 @@ int main() {
 
     db.display();
 
-    db.sub( (void *)1, "TEST" );
+    db.sub( "1", "TEST" );
     cout << db.get("TEST") << endl;
 
     db.display();
