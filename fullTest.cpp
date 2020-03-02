@@ -105,11 +105,21 @@ void thread3(void) {
     pipe[iam] = myQ;
     
     myDatabase myData;
+
+    myData.add("THREAD_TEST","0");
     
-    myData.display();
-    
+    int idx=0;
+    int counter=0;
+
     msg *dataIn;
     while (true) {
+        idx--;
+        if( idx <= 0) {
+            counter++;
+            myData.add("THREAD_TEST",to_string(counter));
+            idx=1000;
+            counter++;
+        }
         //
         // Get message from Q and print it
         //
@@ -119,6 +129,7 @@ void thread3(void) {
             
             dataIn->display();
             
+            cmdOpcode c = dataIn->getCmd();
             string k = dataIn->getKey();
             string v = dataIn->getValue();
             
