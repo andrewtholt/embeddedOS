@@ -3,7 +3,10 @@
 #define _MYDB_H
 #include <string>
 
+#include "msgClass.h"
 #include "database.h"
+
+extern msgPool pool;
 
 class myDatabase : public database {
     private:

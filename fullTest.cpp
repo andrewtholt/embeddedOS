@@ -84,7 +84,14 @@ void thread2(void) {
     ptr->set(SUB, iam, "THREAD_TEST", "");
     t3Q->push(ptr); 
 
+    msg *dataIn;
     while (true) {
+        if(false == myQ->empty()) {
+            dataIn = myQ->front();
+            myQ->pop();
+
+            dataIn->display();
+        }
         //
         // Put message in Q
         //

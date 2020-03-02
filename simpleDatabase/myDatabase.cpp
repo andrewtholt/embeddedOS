@@ -1,11 +1,22 @@
 
 #include "myDatabase.h"
+#include <queue>
 
+extern std::map<std::string, std::queue<msg *> *>  pipe;
 
-void myDatabase::act( const std::string id, const std::string key, std::string value) {
-        printf("PUBLISH ID  : %s\n", id.c_str());
-        printf("       KEY  : %s\n", key.c_str());
-        printf("       VALUE: %s\n", value.c_str());
+void myDatabase::act( std::string id, const std::string key, std::string value) {
+
+    msg *ptr = pool.getMsg();
+
+    ptr->set(SET,"NO_ONE",key,value);
+
+    std::queue<msg *> *out=pipe["THREAD3"];
+
+    out->push( ptr );
+
+    printf("PUBLISH ID  : %s\n", id.c_str());
+    printf("       KEY  : %s\n", key.c_str());
+    printf("       VALUE: %s\n", value.c_str());
 }
 
 void myDatabase::doPublish(std::string key) {
