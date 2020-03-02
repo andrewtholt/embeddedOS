@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.5.0)
 
 project(embeddedOS)
 
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-Wfatal-errors")
 
 # file(GLOB SOURCES "Scheduler/*.c" "simpleQueue/*.c")

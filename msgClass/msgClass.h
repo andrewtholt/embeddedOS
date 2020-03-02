@@ -1,6 +1,8 @@
 #ifndef _TESTING
 #define _TESTING
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 #include <string>
 #include <list>
