@@ -66,6 +66,7 @@ void thread1(void) {
 
 void thread2(void) {
     int idx=0;
+    int count=0;
     
     string iam = "THREAD2";
     
@@ -133,7 +134,17 @@ void thread3(void) {
             string k = dataIn->getKey();
             string v = dataIn->getValue();
             
-            myData.add(k,v);
+            switch(c) {
+                case SET:
+                    myData.add(k,v);
+                    break;
+                case GET:
+                    break;
+                case SUB:
+                    break;
+                case UNSUB:
+                    break;
+            }
             
             pool.returnMsg(dataIn);
         }
