@@ -8,15 +8,20 @@ void myDatabase::act( std::string id, const std::string key, std::string value) 
 
     msg *ptr = pool.getMsg();
 
-    ptr->set(SET,"NO_ONE",key,value);
+    if( ptr == NULL) {
+        printf("No messages remaining\n");
+    } else {
 
-    std::queue<msg *> *out=pipe["THREAD3"];
+        ptr->set(SET,"NO_ONE",key,value);
 
-    out->push( ptr );
+        std::queue<msg *> *out=pipe[id];
 
-    printf("PUBLISH ID  : %s\n", id.c_str());
-    printf("       KEY  : %s\n", key.c_str());
-    printf("       VALUE: %s\n", value.c_str());
+        out->push( ptr );
+
+        printf("PUBLISH ID  : %s\n", id.c_str());
+        printf("       KEY  : %s\n", key.c_str());
+        printf("       VALUE: %s\n", value.c_str());
+    }
 }
 
 void myDatabase::doPublish(std::string key) {
@@ -33,7 +38,7 @@ void myDatabase::doPublish(std::string key) {
 
 bool myDatabase::add(std::string k, std::string v) {
     std::cout << "Here" << std::endl;
-    
+
     bool f = database::add(k,v);  // True if created.
     bool pub = true;
 

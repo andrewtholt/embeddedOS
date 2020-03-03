@@ -85,12 +85,17 @@ void thread2(void) {
     t3Q->push(ptr); 
 
     msg *dataIn;
+    bool qEmpty=false;
     while (true) {
-        if(false == myQ->empty()) {
+        qEmpty = myQ->empty();
+        if(false == qEmpty ) {
             dataIn = myQ->front();
             myQ->pop();
 
+            std::cout << myQ->size() << std::endl;
+
             dataIn->display();
+            pool.returnMsg(dataIn);
         }
         //
         // Put message in Q
