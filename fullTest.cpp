@@ -97,6 +97,8 @@ void thread2(void) {
             dataIn->display();
             pool.returnMsg(dataIn);
         }
+        ptr->set(GET, iam, "THREAD_TEST", "");
+        t3Q->push(ptr); 
         //
         // Put message in Q
         //
@@ -139,6 +141,8 @@ void thread3(void) {
         //
         // Get message from Q and print it
         //
+        bool returnMsg = true;
+
         if(false == myQ->empty()) {
             dataIn = myQ->front();
             myQ->pop();
@@ -155,6 +159,18 @@ void thread3(void) {
                     myData.add(k,v);
                     break;
                 case GET:
+                    cout << "GET " << k << endl;
+                    {
+                        queue<msg *> *toQ ;
+                        toQ = pipe[from];
+    
+                        std::string res = myData.get(k);
+                        dataIn->setSender(iam);
+                        dataIn->setValue(res);
+
+                        toQ->push( dataIn);
+                        returnMsg=false;
+                    }
                     break;
                 case SUB:
                     cout << "SUB " << k << endl;
@@ -164,7 +180,9 @@ void thread3(void) {
                     break;
             }
             
-            pool.returnMsg(dataIn);
+            if( returnMsg) {
+                pool.returnMsg(dataIn);
+            }
         }
         yield();
     }
