@@ -1,0 +1,27 @@
+
+I'm going to base this on Redis, with some changes to compact the packet.
+
+So a redis SET command looks like :
+
+1: *3\r\n
+2: $3\r\n
+3: SET\r\n
+4: $4\r\n
+5: TEST\r\n
+6: $4\r\n
+7: DATA\r\n
+
+For simplicity I will omit the \r\n
+
+So, 3, the command is one of a group, so if we allow a single byte, then:
+
+NOP=0x00
+SET=0x01
+GET=0x02
+SUB=0x03
+UNSUB=0x04
+
+And we can remove the end of line, and the cmd length:
+
+|*|3|0x01|$|4|T|E|S|T|$|5|D|A|T|A|
+
