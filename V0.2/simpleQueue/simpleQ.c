@@ -6,9 +6,25 @@ Note: now stores the "next" pointer prior to processing, allowing you to process
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include "simpleQ.h"
+
+struct queueRoot *mkQueue() {
+
+    struct queueRoot *ptr;
+
+    ptr = (struct queueRoot *)malloc(sizeof(struct queueRoot));
+
+    if( ptr != NULL) {
+        memset(ptr, 0 , sizeof(struct queueRoot));
+
+        initQueue(ptr,0);
+    }
+
+    return ptr;
+}
 
 void initQueue(struct queueRoot* queue, uint8_t irq) {
     queue->head = queue->tail = NULL;

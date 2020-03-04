@@ -1,6 +1,12 @@
 #ifndef SCHED_HEAD
 #define SCHED_HEAD
+#include <setjmp.h>
+#include <stdio.h>
+#include <time.h>
+#include <string.h>
 
+#include <setjmp.h>
+#include <stdlib.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

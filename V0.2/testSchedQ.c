@@ -5,6 +5,9 @@
 
 #include <setjmp.h>
 #include "sched2.h"
+#include "simpleQ.h"
+#include "tasks.h"
+
 
 void thread1(void) {
     int count=0;
@@ -21,6 +24,8 @@ void thread1(void) {
 }
 
 void thread2(void) {
+    tasks[THREAD2] = mkQueue();
+
     while (1) {
         printf("\n\rthread 2");
         yield();
@@ -28,6 +33,10 @@ void thread2(void) {
 }
 
 void thread3(void) {
+    tasks[THREAD3] = mkQueue();
+
+    waitUntilReady(THREAD2);
+
     while (1) {
         printf("\n\rthread 3");
         yield();
@@ -43,9 +52,9 @@ int main() {
     if (!setjmp(new_thread_start_buff)) {
         /* starts three threads */
 
+        startNewThread(thread3);
         startNewThread(thread1); // should error-check return value.
         startNewThread(thread2);
-        startNewThread(thread3);
         swapThreadBlock();
     }
     (*(cpr->function))();

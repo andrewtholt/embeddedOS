@@ -1,6 +1,7 @@
 
 /* Lightweight Multitasker in C -- by Jonathan Finger, 1995   (reformatted) */
 
+/*
 #include <setjmp.h>
 #include <stdio.h>
 #include <time.h>
@@ -8,6 +9,7 @@
 
 #include <setjmp.h>
 #include <stdlib.h>
+*/
 #include "sched2.h"
 
 THREAD_NUM  current_thread = NO_THREAD;

@@ -26,6 +26,7 @@ struct queueRoot {
     int intId;
 };
 
+struct queueRoot *mkQueue();
 void initQueue(struct queueRoot *queue, uint8_t irq);
 void pushQueue(struct queueRoot* queue, int size, queue_data_type contents);
 void processQueue(struct queueRoot* queue, void (*func)(queue_data_type));
