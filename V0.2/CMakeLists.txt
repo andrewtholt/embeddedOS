@@ -6,16 +6,12 @@ project(embeddedOS)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-Wfatal-errors")
 
-# file(GLOB SOURCES "Scheduler/*.c" "simpleQueue/*.c")
-# file(GLOB Q_SOURCES "simpleQueue/*.c")
 file(GLOB Q_SOURCES "simpleQueue/*.c")
 file(GLOB SCH_SOURCES "Scheduler/*.c")
 file(GLOB UTILS_SOURCES "Utils/*.c")
 file(GLOB TASK_SOURCES "Tasks/*.c")
 file(GLOB MSG_SOURCES "msgClass/*.cpp" "msgClass/*.h")
 file(GLOB DB_SOURCES "simpleDatabase/*.cpp" "simpleDatabase/*.h")
-
-# file(GLOB TC_SOURCES "taskClass/*.cpp" "taskClass/*.h")
 
 include_directories(simpleQueue Scheduler taskClass msgClass Utils simpleDatabase Tasks)
 
