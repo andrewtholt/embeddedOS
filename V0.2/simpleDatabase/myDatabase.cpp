@@ -6,7 +6,7 @@ extern std::map<std::string, std::queue<msg *> *>  pipe;
 
 void myDatabase::act( std::string id, const std::string key, std::string value) {
 
-    msg *ptr = pool.getMsg();
+    msg *ptr = getMsg();
 
     if( ptr == NULL) {
         printf("No messages remaining\n");

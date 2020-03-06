@@ -3,10 +3,11 @@
 #define _MYDB_H
 #include <string>
 
-#include "msgClass.h"
+// #include "msgClass.h"
 #include "database.h"
+#include "msg.h"
 
-extern msgPool pool;
+extern struct freePoolDef *pool;
 
 class myDatabase : public database {
     private:

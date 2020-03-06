@@ -10,12 +10,13 @@ file(GLOB Q_SOURCES "simpleQueue/*.c")
 file(GLOB SCH_SOURCES "Scheduler/*.c")
 file(GLOB UTILS_SOURCES "Utils/*.c")
 file(GLOB TASK_SOURCES "Tasks/*.c")
-file(GLOB MSG_SOURCES "msgClass/*.cpp" "msgClass/*.h")
+# file(GLOB MSG_SOURCES "msgClass/*.cpp" "msgClass/*.h")
+file(GLOB MSG_SOURCES "Msg/*.c")
 file(GLOB DB_SOURCES "simpleDatabase/*.cpp" "simpleDatabase/*.h")
 
-include_directories(simpleQueue Scheduler taskClass msgClass Utils simpleDatabase Tasks)
+include_directories(simpleQueue Scheduler taskClass Utils simpleDatabase Tasks Msg)
 
-add_library(utils STATIC ${TASK_SOURCES} ${SCH_SOURCES} ${UTILS_SOURCES} ${Q_SOURCES} ${DB_SOURCES})
+add_library(utils STATIC ${MSG_SOURCES} ${TASK_SOURCES} ${SCH_SOURCES} ${UTILS_SOURCES} ${Q_SOURCES} ${DB_SOURCES})
 
 add_executable(testSched2 testSched2.c ${SCH_SOURCES})
 # add_executable(testSchedQ testSchedQ.c ${SCH_SOURCES} ${Q_SOURCES} )
