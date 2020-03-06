@@ -32,9 +32,15 @@ struct msg {
 
     char key[MAX_KEY];
     char value[MAX_VALUE];
+
+    struct msg *next;
     
 };
 
 struct msg *mkMsg(const threadId s, const cmdType c, const char *k, const char *v);
+struct msg *getMsg();
+
+bool addToPool(struct msg *ptr);
+bool initPool();
 
 #endif
