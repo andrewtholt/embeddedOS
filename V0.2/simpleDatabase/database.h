@@ -2,6 +2,7 @@
 #define _DATABASE
 
 #include <stdint.h>
+#include "tasks.h"
 
 #ifdef __cplusplus
 #include <string>
@@ -12,16 +13,6 @@
 #define PUB_ON_UPDATE (0)
 #define PUB_ON_CHANGE (1)
 
-/*
-struct dbValue {
-    std::string value;
-
-    uint8_t pubPolicy;
-
-    std::set<void *> subscriber;
-};
-*/
-
 class dbValue {
     private:
         std::string value;
@@ -29,7 +20,6 @@ class dbValue {
         uint8_t pubPolicy;
 
         std::set<std::string> *subscriber;
-//        std::set<std::string> subscriber;
     public:
         dbValue(std::string v ) {
             value = v;
@@ -100,7 +90,7 @@ class database {
 
         void display();
 
-       void act(const std::string id, const std::string key, const std::string value);
+       void act(const enum threadId id, const std::string key, const std::string value);
 
 };
 
@@ -110,7 +100,7 @@ class database {
 extern "C" {
 #endif
 
-// struct database* newClass();
+// struct database* newDatabase();
 // void display(struct database*);
 
 #ifdef __cplusplus

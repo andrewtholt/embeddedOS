@@ -12,14 +12,14 @@
 #include <map>
 #include <queue>
 
-#include "msgClass.h"
+#include "msg.h"
 
 #include "myDatabase.h"
 
 using namespace std;
-map<string, queue<msg *> *>  pipe;
+map<string, queue<msg *>   pipe;
 
-msgPool pool;
+// msgPool pool;
 
 
 bool threadReady(string name) {
@@ -68,7 +68,7 @@ void thread2(void) {
     int idx=0;
     int count=0;
     
-    string iam = "THREAD2";
+    threadId iam = THREAD2;
     
     bool ready=false;
     
@@ -80,8 +80,8 @@ void thread2(void) {
     queue<msg *> *t3Q ;
     t3Q = pipe["THREAD3"];
     
-    msg *ptr = pool.getMsg(); 
-    ptr->set(SUB, iam, "THREAD_TEST", "");
+    msg *ptr = getMsg(); 
+    ptr = mkMsg(iam, SUB, "THREAD_TEST", "");
     t3Q->push(ptr); 
 
     msg *dataIn;

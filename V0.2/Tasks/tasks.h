@@ -5,7 +5,7 @@
 #include "simpleQ.h"
 
 typedef enum threadId {
-    INVALID=0,
+    NO_ONE=0,
 
     THREAD1,
     THREAD2,

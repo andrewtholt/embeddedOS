@@ -12,37 +12,42 @@
 #define MAX_VALUE 16
 #define POOL_SIZE 10
 
-struct freePoolDef {
-    struct msg *head;
+#ifdef __cplusplus
+extern "C" {
+#endif
+    struct freePoolDef {
+        struct msg *head;
 
-    uint8_t count;
-};
+        uint8_t count;
+    };
 
-struct freePoolDef pool;
+    struct freePoolDef pool;
 
-typedef enum cmdType {
-    NOP = 0,
-    SET,
-    GET,
-    SUB,
-    UNSUB
-} cmdType ;
+    typedef enum cmdType {
+        NOP = 0,
+        SET,
+        GET,
+        SUB,
+        UNSUB
+    } cmdType ;
 
-struct msg {
-    threadId sender;
-    cmdType cmd;
+    struct msg {
+        threadId sender;
+        cmdType cmd;
 
-    char key[MAX_KEY];
-    char value[MAX_VALUE];
+        char key[MAX_KEY];
+        char value[MAX_VALUE];
 
-    struct msg *next;
-    
-};
+        struct msg *next;
 
-struct msg *mkMsg(const threadId s, const cmdType c, const char *k, const char *v);
-struct msg *getMsg();
+    };
 
-bool addToPool(struct msg *ptr);
-bool initPool();
+    struct msg *mkMsg(const threadId s, const cmdType c, const char *k, const char *v);
+    struct msg *getMsg();
 
+    bool addToPool(struct msg *ptr);
+    bool initPool();
+#ifdef __cplusplus
+}
+#endif
 #endif

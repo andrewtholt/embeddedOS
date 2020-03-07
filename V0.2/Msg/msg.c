@@ -11,12 +11,17 @@ bool addToPool(struct msg *ptr) {
 
     if( pool.head == NULL) {
         pool.head = ptr;
+        pool.count=1;
+
         bool fail=false;
     } else {
         ptr->next = pool.head;
         pool.head = ptr;
+
+        pool.count++;
         bool fail=false;
     }
+
     return fail;
 }
 
@@ -44,6 +49,11 @@ struct msg *getMsg() {
     pool.head = ptr->next;
 
     ptr->next = NULL;
+
+    pool.count--;
+    if( pool.count < 0) {
+        pool.count=0;
+    }
 
     return(ptr);
 }

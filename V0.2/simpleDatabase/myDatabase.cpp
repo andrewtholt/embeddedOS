@@ -4,7 +4,7 @@
 
 extern std::map<std::string, std::queue<msg *> *>  pipe;
 
-void myDatabase::act( std::string id, const std::string key, std::string value) {
+void myDatabase::act( enum threadId id, const std::string key, std::string value) {
 
     msg *ptr = getMsg();
 
@@ -12,13 +12,13 @@ void myDatabase::act( std::string id, const std::string key, std::string value) 
         printf("No messages remaining\n");
     } else {
 
-        ptr->set(SET,"NO_ONE",key,value);
+        mkMsg(NO_ONE,SET,key.c_str(),value.c_str());
 
-        std::queue<msg *> *out=pipe[id];
 
-        out->push( ptr );
+        pushQueue( tasks[id], sizeof(void *),ptr );
+//        out->push( ptr );
 
-        printf("PUBLISH ID  : %s\n", id.c_str());
+        printf("PUBLISH ID  : %d\n", id);
         printf("       KEY  : %s\n", key.c_str());
         printf("       VALUE: %s\n", value.c_str());
     }
@@ -73,3 +73,11 @@ bool myDatabase::add(std::string k, std::string v) {
 
     return pub;
 }
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef __cplusplus
+}
+#endif
