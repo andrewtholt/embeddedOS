@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
+
 #include "tasks.h"
 
 #define MAX_KEY    8
@@ -16,7 +18,7 @@ struct freePoolDef {
     uint8_t count;
 };
 
-struct freePoolDef *pool;
+struct freePoolDef pool;
 
 typedef enum cmdType {
     NOP = 0,
