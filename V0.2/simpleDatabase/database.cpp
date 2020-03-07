@@ -157,8 +157,10 @@ void database::display() {
 
 }
 
+/*
 void database::act( const enum threadId id, const std::string key, const std::string value) {
 }
+*/
 
 #ifdef __cplusplus
 extern "C" {

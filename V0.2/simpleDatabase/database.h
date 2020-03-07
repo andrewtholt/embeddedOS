@@ -2,7 +2,7 @@
 #define _DATABASE
 
 #include <stdint.h>
-#include "tasks.h"
+// #include "tasks.h"
 
 #ifdef __cplusplus
 #include <string>
@@ -90,7 +90,7 @@ class database {
 
         void display();
 
-       void act(const enum threadId id, const std::string key, const std::string value);
+//       void act(const enum threadId id, const std::string key, const std::string value);
 
 };
 
