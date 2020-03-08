@@ -1,6 +1,8 @@
 #include "sched2.h"
 #include "tasks.h"
-
+// 
+// A task is ready when it has written it Q ptr into the tasks list.
+//
 bool taskReady(threadId id) {
     bool ready = false;
 
