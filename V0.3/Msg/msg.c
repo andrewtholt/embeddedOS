@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "msg.h"
 
+struct freePoolDef pool;
+
 bool addToPool(struct msg *ptr) {
 
     bool fail=true;

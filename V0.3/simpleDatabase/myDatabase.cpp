@@ -2,7 +2,7 @@
 #include "myDatabase.h"
 #include <queue>
 
-extern std::map<std::string, std::queue<msg *> *>  pipe;
+// extern std::map<std::string, std::queue<msg *> *>  pipe;
 
 void myDatabase::act( enum threadId id, const std::string key, std::string value) {
 
@@ -24,9 +24,12 @@ void myDatabase::act( enum threadId id, const std::string key, std::string value
     }
 }
 
+const std::set<enum threadId> *myDatabase::getSubscriber(const std::string key) {
+}
+
 void myDatabase::doPublish(std::string key) {
 
-    const std::set<std::string> *ptr = getSubscriber(key); 
+    const std::set<enum threadId> *ptr = getSubscriber(key); 
     const std::string value = get(key);
 
     if( ptr->size() > 0 ) {
@@ -36,6 +39,9 @@ void myDatabase::doPublish(std::string key) {
     }
 }
 
+void myDatabase::sub(std::string key, enum threadId id) {
+}
+
 bool myDatabase::add(std::string k, std::string v) {
     std::cout << "Here" << std::endl;
 
@@ -43,6 +49,7 @@ bool myDatabase::add(std::string k, std::string v) {
     bool pub = true;
 
     // Changed
+    /*
     uint8_t p = getPubPolicy(k);
 
     switch(p) {
@@ -64,6 +71,7 @@ bool myDatabase::add(std::string k, std::string v) {
 
             break;
     }
+    */
 
     pub = true;
 
@@ -73,6 +81,7 @@ bool myDatabase::add(std::string k, std::string v) {
 
     return pub;
 }
+
 
 #ifdef __cplusplus
 extern "C" {

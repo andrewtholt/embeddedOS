@@ -5,13 +5,15 @@ project(embeddedOS)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-Wfatal-errors")
+set(CMAKE_CFLAGS "-Wfatal-errors")
 
 file(GLOB Q_SOURCES "simpleQueue/*.c")
 file(GLOB SCH_SOURCES "Scheduler/*.c")
 file(GLOB UTILS_SOURCES "Utils/*.c")
 file(GLOB TASK_SOURCES "Tasks/*.c")
 file(GLOB MSG_SOURCES "Msg/*.c")
-file(GLOB DB_SOURCES "simpleDatabase/*.cpp" "simpleDatabase/*.h")
+# file(GLOB DB_SOURCES "simpleDatabase/*.cpp" "simpleDatabase/*.h")
+file(GLOB DB_SOURCES "simpleDatabase/*.cpp" )
 
 include_directories(simpleQueue Scheduler taskClass Utils simpleDatabase Tasks Msg)
 
@@ -34,4 +36,7 @@ target_link_libraries(fullTest PUBLIC utils)
 
 add_executable(tstDatabase tstDatabase.cpp )
 target_link_libraries(tstDatabase PUBLIC utils)
+
+add_executable(tstLib tstLib.cpp )
+target_link_libraries(tstLib PUBLIC utils)
 

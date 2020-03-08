@@ -1,3 +1,4 @@
+#pragma once
 #ifndef __MSG_H
 #define __MSG_H
 
@@ -21,7 +22,7 @@ extern "C" {
         uint8_t count;
     };
 
-    struct freePoolDef pool;
+    extern struct freePoolDef pool;
 
     typedef enum cmdType {
         NOP = 0,

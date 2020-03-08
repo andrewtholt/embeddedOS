@@ -1,5 +1,7 @@
 #include "sched2.h"
 #include "tasks.h"
+
+struct queueRoot *tasks[LAST];
 // 
 // A task is ready when it has written it Q ptr into the tasks list.
 //

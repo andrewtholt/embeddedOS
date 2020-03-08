@@ -1,3 +1,4 @@
+#pragma once
 #ifndef __SIMPLE_Q
 #define __SIMPLE_Q
 
