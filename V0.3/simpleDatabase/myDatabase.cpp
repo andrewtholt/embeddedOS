@@ -15,7 +15,7 @@ void myDatabase::act( enum threadId id, const std::string key, std::string value
         mkMsg(NO_ONE,SET,key.c_str(),value.c_str());
 
 
-        pushQueue( tasks[id], sizeof(void *),ptr );
+        pushQueue( tasks[id], (void *)ptr );
 //        out->push( ptr );
 
         printf("PUBLISH ID  : %d\n", id);
@@ -44,9 +44,8 @@ void myDatabase::sub(std::string key, enum threadId id) {
 
 bool myDatabase::add(std::string k, std::string v) {
     std::cout << "Here" << std::endl;
-
-    bool f = database::add(k,v);  // True if created.
-    bool pub = true;
+    bool pub = false;
+    bool ff = database::add(k,v);  // true if created,
 
     // Changed
     /*
@@ -73,19 +72,26 @@ bool myDatabase::add(std::string k, std::string v) {
     }
     */
 
-    pub = true;
-
     if( pub ) {
         doPublish(k);
     }
 
-    return pub;
+    return ff;
 }
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+struct myDatabase *newDatabase() {
+    return new myDatabase();
+}
+
+bool dbAdd(struct myDatabase *db,char *key, char *value) {
+    
+    bool failFlag = db->add(key, value);
+    return failFlag;
+}
 
 #ifdef __cplusplus
 }

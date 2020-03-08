@@ -12,7 +12,7 @@ extern "C" {
 typedef void * queue_data_type;
 
 struct queueName{
-    queue_data_type contents;
+    void *contents;
     struct queueName *next;
 };
 
@@ -29,9 +29,9 @@ struct queueRoot {
 
 struct queueRoot *mkQueue();
 void initQueue(struct queueRoot *queue, uint8_t irq);
-void pushQueue(struct queueRoot* queue, int size, queue_data_type contents);
+void pushQueue(struct queueRoot* queue, void *contents);
 void processQueue(struct queueRoot* queue, void (*func)(queue_data_type));
-queue_data_type popQueue(struct queueRoot* queue);
+void *popQueue(struct queueRoot *queue);
 int sizeOfQueue(struct queueRoot* queue);
 bool queueEmpty( struct queueRoot *queue);
 

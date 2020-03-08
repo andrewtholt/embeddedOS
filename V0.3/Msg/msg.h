@@ -45,6 +45,7 @@ extern "C" {
 
     struct msg *mkMsg(const threadId s, const cmdType c, const char *k, const char *v);
     struct msg *getMsg();
+    void displayMsg(struct msg*ptr);
 
     bool addToPool(struct msg *ptr);
     bool initPool();

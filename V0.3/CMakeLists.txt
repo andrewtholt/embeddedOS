@@ -5,7 +5,7 @@ project(embeddedOS)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-Wfatal-errors")
-set(CMAKE_CFLAGS "-Wfatal-errors")
+set(CMAKE_C_FLAGS "-Wfatal-errors")
 
 file(GLOB Q_SOURCES "simpleQueue/*.c")
 file(GLOB SCH_SOURCES "Scheduler/*.c")
@@ -23,10 +23,10 @@ add_executable(testSched2 testSched2.c ${SCH_SOURCES})
 add_executable(testSchedQ testSchedQ.c )
 target_link_libraries(testSchedQ PUBLIC utils)
 
-add_executable(testQ testQ.c ${Q_SOURCES})
+# add_executable(testQ testQ.c ${Q_SOURCES})
 
-add_executable(testOS testOS.cpp ${Q_SOURCES} ${SCH_SOURCES} )
-target_link_libraries(testOS PUBLIC utils)
+# add_executable(testOS testOS.cpp ${Q_SOURCES} ${SCH_SOURCES} )
+# target_link_libraries(testOS PUBLIC utils)
 
 add_executable(qtestOS qtestOS.cpp ${SCH_SOURCES} )
 add_executable(tstMsg tstMsg.c ${MSG_SOURCES} )

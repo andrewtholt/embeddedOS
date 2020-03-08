@@ -32,8 +32,8 @@ void initQueue(struct queueRoot* queue, uint8_t irq) {
     queue->size = 0;
 }
 
-void pushQueue(struct queueRoot* queue, int size, queue_data_type contents){
-    struct queueName *item = (struct queueName *)malloc(size);
+void pushQueue(struct queueRoot* queue, void *contents) {
+    struct queueName *item = (struct queueName *)malloc(sizeof(struct queueName));
     item->contents = contents;
 
     if( queue->intId != NO_INT ) {
@@ -53,7 +53,7 @@ void pushQueue(struct queueRoot* queue, int size, queue_data_type contents){
     }
 }
 
-queue_data_type popQueue(struct queueRoot* queue){
+void *popQueue(struct queueRoot* queue){
     queue_data_type popped;
     if (queue->head == NULL){
         return NULL; // causes a compile warning.  Just check for ==NULL when popping.

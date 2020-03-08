@@ -60,6 +60,13 @@ struct msg *getMsg() {
     return(ptr);
 }
 
+void displayMsg(struct msg *ptr) {
+    printf("Sender  : %02d\n", (uint8_t) ptr->sender);
+    printf("Command : %02d\n", (uint8_t) ptr->cmd);
+    printf("Key     : %s\n", ptr->key);
+    printf("Value   : %s\n", ptr->value);
+}
+
 bool initPool() {
     bool fail=true;
 
