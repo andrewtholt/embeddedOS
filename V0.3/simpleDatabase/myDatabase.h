@@ -31,6 +31,7 @@ class myDbValue : public dbValue {
     private:
         std::set<enum threadId> subscriber;
     public:
+        void sub(enum threadId id);
 
 };
 #endif

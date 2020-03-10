@@ -13,6 +13,8 @@
 
 void thread1(void) {
     int count=0;
+
+    const threadId iam = THREAD1;
     while (1) {
         count++;
 
@@ -27,6 +29,8 @@ void thread1(void) {
 
 void thread2(void) {
     bool failFlag = true;
+    const threadId iam = THREAD2;
+
     struct myDatabase *mydb = newDatabase();
 
     if( mydb == NULL ) {
@@ -61,11 +65,13 @@ void thread2(void) {
 
 void thread3(void) {
 
-    tasks[THREAD3] = mkQueue();
+    const threadId iam = THREAD3;
+
+    tasks[iam] = mkQueue();
 
     waitUntilReady(THREAD2);
 
-    struct msg *myMsg = mkMsg(THREAD3, SET, "TEST", "THREE");
+    struct msg *myMsg = mkMsg(iam, SET, "TEST", "THREE");
 
     pushQueue( tasks[THREAD2], (void *)myMsg );
 
