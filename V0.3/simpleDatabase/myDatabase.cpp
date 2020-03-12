@@ -79,6 +79,10 @@ bool myDatabase::add(std::string k, std::string v) {
     return ff;
 }
 
+std::string myDatabase::get(std::string key) {
+    return database::get(key);
+}
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -88,9 +92,15 @@ struct myDatabase *newDatabase() {
 }
 
 bool dbAdd(struct myDatabase *db,char *key, char *value) {
-    
     bool failFlag = db->add(key, value);
     return failFlag;
+}
+
+const char *dbGet(struct myDatabase *db,char *key) {
+    std::string tmp = db->get(key);
+
+    const char *ret= tmp.c_str();
+    return ret;
 }
 
 #ifdef __cplusplus

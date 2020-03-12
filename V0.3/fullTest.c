@@ -9,6 +9,7 @@
 #include "simpleQ.h"
 #include "tasks.h"
 #include "msg.h"
+#include "parseMsg.h"
 
 
 void thread1(void) {
@@ -56,6 +57,7 @@ void thread2(void) {
             //
             // parseMsg(mydb, ptr);
             //
+            failFlag = parseMsg(mydb, ptr);
             failFlag = addToPool(ptr);
         }
 

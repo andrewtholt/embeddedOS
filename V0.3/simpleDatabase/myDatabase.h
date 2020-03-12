@@ -20,6 +20,7 @@ class myDatabase : public database {
         void doPublish(std::string key);
     public:
         bool add(std::string, std::string) ;
+        std::string get(std::string);
         void act( enum threadId id, const std::string key, const std::string value) ;
 
         const std::set<enum threadId> *getSubscriber(const std::string key);
@@ -41,6 +42,7 @@ extern "C" {
 #endif
 struct myDatabase *newDatabase();
 bool dbAdd(struct myDatabase *db,char *key, char *value);
+const char *dbGet(struct myDatabase *db,char *key);
 #ifdef __cplusplus
 }
 #endif
