@@ -18,16 +18,18 @@ extern "C" {
 class myDatabase : public database {
     private:
         void doPublish(std::string key);
-    public:
-        bool add(std::string, std::string) ;
-        std::string get(std::string);
+
         void act( enum threadId id, const std::string key, const std::string value) ;
 
         const std::set<enum threadId> *getSubscriber(const std::string key);
-
+    public:
+        std::string get(std::string);
         void sub(std::string key, enum threadId id);
+
+        bool add(std::string k, std::string v) ;
 }; 
 
+/*
 class myDbValue : public dbValue {
     private:
         std::set<enum threadId> subscriber;
@@ -35,6 +37,7 @@ class myDbValue : public dbValue {
         void sub(enum threadId id);
 
 };
+*/
 #endif
 
 #ifdef __cplusplus
