@@ -27,8 +27,14 @@ bool myDatabase::parseMsg(struct msg *m) {
             {
                 std::string v = get( m->key);
                 // 
-                // TODO Assemble SEND message to sender, and
-                // send it.
+                // TODO Assemble SEND message to sender, and ...
+                // 
+                memset( m->value, 0, MAX_VALUE);
+                m->cmd = SET;
+                m->sender = NO_ONE;
+                strncpy(m->value, v.c_str(), v.length());
+                // 
+                // ... send it.
                 // 
             }
             break;
