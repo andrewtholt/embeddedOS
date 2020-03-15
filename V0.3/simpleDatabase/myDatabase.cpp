@@ -1,81 +1,82 @@
 
 #include "myDatabase.h"
 #include <queue>
+#include <iostream>
 
 // extern std::map<std::string, std::queue<msg *> *>  pipe;
 
-void myDatabase::act( enum threadId id, const std::string key, std::string value) {
+myDatabase::myDatabase() : database () {
 
-    msg *ptr = getMsg();
+}
 
-    if( ptr == NULL) {
-        printf("No messages remaining\n");
-    } else {
+myDatabase::myDatabase(threadId o) : database () {
+    owner = o;
+    ownerSet = true;
+}
 
-        mkMsg(NO_ONE,SET,key.c_str(),value.c_str());
+bool myDatabase::parseMsg(struct msg *m) {
+    bool failFlag = true;
 
-
-        pushQueue( tasks[id], (void *)ptr );
-//        out->push( ptr );
-
-        printf("PUBLISH ID  : %d\n", id);
-        printf("       KEY  : %s\n", key.c_str());
-        printf("       VALUE: %s\n", value.c_str());
+    switch( m->cmd ) {
+        case NOP:
+            break;
+        case SET:
+            failFlag = add( m->key, m->value);
+            break;
+        case GET:
+            {
+                std::string v = get( m->key);
+                // 
+                // TODO Assemble SEND message to sender, and
+                // send it.
+                // 
+            }
+            break;
+        case SUB:
+            (subs[m->key]).insert(m->sender);
+            // 
+            // TODO Assemble SEND message to sender, and
+            // send it.
+            // 
+            break;
+        case UNSUB:
+            // 
+            // TODO Delete this sender from the subscribe list, no message.
+            // 
+            break;
+        default:
+            failFlag=true;
+            break;
     }
+
+    return failFlag;
 }
 
-const std::set<enum threadId> *myDatabase::getSubscriber(const std::string key) {
-}
+void myDatabase::setOwner(threadId o) {
 
-void myDatabase::doPublish(std::string key) {
-
-    const std::set<enum threadId> *ptr = getSubscriber(key); 
-    const std::string value = get(key);
-
-    if( ptr->size() > 0 ) {
-        for( auto id : *ptr ) {
-            act( id, key, value) ;
-        }
+    if( ownerSet == false ) {
+        owner = o;
+        ownerSet = true;
     }
-}
-
-void myDatabase::sub(std::string key, enum threadId id) {
 }
 
 bool myDatabase::add(std::string k, std::string v) {
     std::cout << "Here" << std::endl;
-    bool pub = false;
+    bool pub = true;
     bool ff = database::add(k,v);  // true if created,
 
-    // Changed
-    /*
-    uint8_t p = getPubPolicy(k);
-
-    switch(p) {
-        case PUB_ON_UPDATE:
-            if(f == false ) {
-                std::cout << k << " updated, so publish" << std::endl;
-                pub = true;
-            } else {
-                pub = false;
-            }
-            break;
-        case PUB_ON_CHANGE:
-            if(f == true ) {
-                std::cout << k << " changed, so publish" << std::endl;
-                pub = true;
-            } else {
-                pub = false;
-            }
-
-            break;
-    }
-    */
+    int subSize = (subs[k]).size();
 
     if( pub ) {
-        doPublish(k);
+        if (subSize > 0) {
+            for(auto f: subs[k]) {
+                printf("Subscriber %d\n", f);
+                // 
+                // TODO Send message to subscriber here
+                // 
+            }
+        }
     }
-
     return ff;
 }
 
@@ -87,21 +88,28 @@ std::string myDatabase::get(std::string key) {
 #ifdef __cplusplus
 extern "C" {
 #endif
-struct myDatabase *newDatabase() {
-    return new myDatabase();
-}
+    struct myDatabase *newDatabase() {
+        return new myDatabase();
+    }
 
-bool dbAdd(struct myDatabase *db,char *key, char *value) {
-    bool failFlag = db->add(key, value);
-    return failFlag;
-}
+    void dbSetOwner(struct myDatabase *db, enum threadId id) {
+        db->setOwner(id);
+    }
 
-const char *dbGet(struct myDatabase *db,char *key) {
-    std::string tmp = db->get(key);
+    bool dbAdd(struct myDatabase *db,char *key, char *value) {
+        bool failFlag = db->add(key, value);
+        return failFlag;
+    }
 
-    const char *ret= tmp.c_str();
-    return ret;
-}
+    const char *dbGet(struct myDatabase *db,char *key) {
+        std::string tmp = db->get(key);
+
+        const char *ret= tmp.c_str();
+        return ret;
+    }
+    bool dbParseMsg(struct myDatabase *db, struct msg *m) {
+        db->parseMsg( m );
+    }
 
 #ifdef __cplusplus
 }

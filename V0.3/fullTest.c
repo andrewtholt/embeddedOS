@@ -9,7 +9,7 @@
 #include "simpleQ.h"
 #include "tasks.h"
 #include "msg.h"
-#include "parseMsg.h"
+// #include "parseMsg.h"
 
 
 void thread1(void) {
@@ -20,9 +20,9 @@ void thread1(void) {
         count++;
 
         if( (count % 2) == 0) {
-            printf("\n\rthread 1:even");
+            printf("\n\rthread 1:even\n");
         } else {
-            printf("\n\rthread 1:Odd");
+            printf("\n\rthread 1:Odd\n");
         }
         yield();
     }
@@ -31,20 +31,28 @@ void thread1(void) {
 void thread2(void) {
     bool failFlag = true;
     const threadId iam = THREAD2;
+    int counter = 1;
+    
+    char valueBuffer[MAX_VALUE];
+    memset(valueBuffer, 0, MAX_VALUE);
 
     struct myDatabase *mydb = newDatabase();
+    dbSetOwner(mydb, iam);
 
     if( mydb == NULL ) {
         fprintf(stderr, "thread2: failed to create db");
         exit(2);
     }
 
-    failFlag = dbAdd(mydb, "TEST", "TWO");
+    failFlag = dbAdd(mydb, "TEST", "0000");
 
     tasks[THREAD2] = mkQueue();
 
     while (1) {
         printf("\n\rthread 2");
+        
+        sprintf(valueBuffer,"%04d", counter++);
+        failFlag = dbAdd(mydb, "TEST", valueBuffer);
 
         if( queueEmpty( tasks[THREAD2])== false ) {
             printf("\nI have work\n");
@@ -57,8 +65,8 @@ void thread2(void) {
             //
             // parseMsg(mydb, ptr);
             //
-            failFlag = parseMsg(mydb, ptr);
-            failFlag = addToPool(ptr);
+            failFlag = dbParseMsg(mydb, ptr);
+            // failFlag = addToPool(ptr);
         }
 
         yield();
@@ -73,12 +81,16 @@ void thread3(void) {
 
     waitUntilReady(THREAD2);
 
-    struct msg *myMsg = mkMsg(iam, SET, "TEST", "THREE");
+//    struct msg *myMsg = mkMsg(iam, SET, "TEST", "THREE");
+    struct msg *myMsg = mkMsg(iam, SUB, "TEST", "");
 
     pushQueue( tasks[THREAD2], (void *)myMsg );
 
     while (1) {
         printf("\n\rthread 3");
+        if( queueEmpty( tasks[THREAD3])== false ) {
+            printf("\nI have work\n");
+        }
         yield();
     }
 }

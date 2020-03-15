@@ -5,10 +5,12 @@
 
 #ifdef __cplusplus
 
+#include <set>
 #include <string>
 #include "database.h"
 #include "msg.h"
 
+extern struct queueRoot *tasks[LAST];
 /*
 extern "C" {
 #include "msg.h"
@@ -17,35 +19,35 @@ extern "C" {
 
 class myDatabase : public database {
     private:
-        void doPublish(std::string key);
+        bool ownerSet = false;
+        threadId owner = NO_ONE;
 
-        void act( enum threadId id, const std::string key, const std::string value) ;
+        std::map<std::string,std::set<enum threadId> > subs;
 
-        const std::set<enum threadId> *getSubscriber(const std::string key);
     public:
+        myDatabase();
+        myDatabase( threadId owner );
+        void setOwner( threadId owner );
         std::string get(std::string);
-        void sub(std::string key, enum threadId id);
+//        void sub(std::string key, enum threadId id);
 
         bool add(std::string k, std::string v) ;
+        bool parseMsg(struct msg *m);
 }; 
 
-/*
-class myDbValue : public dbValue {
-    private:
-        std::set<enum threadId> subscriber;
-    public:
-        void sub(enum threadId id);
-
-};
-*/
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+#include "tasks.h"
+#include "msg.h"
+
 struct myDatabase *newDatabase();
 bool dbAdd(struct myDatabase *db,char *key, char *value);
+void dbSetOwner(struct myDatabase *db,enum threadId id);
 const char *dbGet(struct myDatabase *db,char *key);
+bool dbParseMsg(struct myDatabase *db, struct msg *m);
 #ifdef __cplusplus
 }
 #endif

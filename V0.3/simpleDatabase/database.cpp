@@ -36,16 +36,15 @@ database::database()
 bool database::add(std::string key, std::string v) {
 
     bool flag=false;
+    int cnt = data.count( key );
 
-    if( data.count( key ) == 0 ) {
+    if( cnt == 0 ) {
         data[key] = new dbValue( v );
         flag=true;
     } else {
-        if( v == data[key]->getValue() ) {
-            flag = false;
-        } else {
+        flag = false;
+        if( v != data[key]->getValue() ) {
             data[key]->setValue( v ) ;
-            flag=true;
         }
     }
     return flag;
