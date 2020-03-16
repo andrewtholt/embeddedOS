@@ -58,15 +58,11 @@ void thread2(void) {
             printf("\nI have work\n");
 
             struct msg *ptr = (struct msg *)popQueue( tasks[THREAD2] );
-
             displayMsg( ptr );
             //
             //  Update the database from the message
             //
-            // parseMsg(mydb, ptr);
-            //
             failFlag = dbParseMsg(mydb, ptr);
-            // failFlag = addToPool(ptr);
         }
 
         yield();
@@ -75,14 +71,20 @@ void thread2(void) {
 
 void thread3(void) {
 
+    bool failFlag=true;
     const threadId iam = THREAD3;
+
+    struct myDatabase *mydb = newDatabase();
+    dbSetOwner(mydb, iam);
 
     tasks[iam] = mkQueue();
 
     waitUntilReady(THREAD2);
 
-//    struct msg *myMsg = mkMsg(iam, SET, "TEST", "THREE");
-    struct msg *myMsg = mkMsg(iam, SUB, "TEST", "");
+    struct msg *myMsg = mkMsg(iam, GET, "TEST", "");
+    pushQueue( tasks[THREAD2], (void *)myMsg );
+
+    myMsg = mkMsg(iam, SUB, "TEST", "");
 
     pushQueue( tasks[THREAD2], (void *)myMsg );
 
@@ -90,6 +92,9 @@ void thread3(void) {
         printf("\n\rthread 3");
         if( queueEmpty( tasks[THREAD3])== false ) {
             printf("\nI have work\n");
+            struct msg *ptr = (struct msg *)popQueue( tasks[iam] );
+            displayMsg( ptr );
+            failFlag = dbParseMsg(mydb, ptr);
         }
         yield();
     }

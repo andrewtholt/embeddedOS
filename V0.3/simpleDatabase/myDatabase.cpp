@@ -22,6 +22,7 @@ bool myDatabase::parseMsg(struct msg *m) {
             break;
         case SET:
             failFlag = add( m->key, m->value);
+            addToPool(m);
             break;
         case GET:
             {
