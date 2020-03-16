@@ -29,6 +29,8 @@ bool myDatabase::parseMsg(struct msg *m) {
                 // 
                 // TODO Assemble SEND message to sender, and ...
                 // 
+                enum threadId sendTo = m->sender;
+
                 memset( m->value, 0, MAX_VALUE);
                 m->cmd = SET;
                 m->sender = NO_ONE;
@@ -36,6 +38,7 @@ bool myDatabase::parseMsg(struct msg *m) {
                 // 
                 // ... send it.
                 // 
+                pushQueue( tasks[sendTo], (void *)m );
             }
             break;
         case SUB:
