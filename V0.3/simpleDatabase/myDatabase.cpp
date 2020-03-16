@@ -17,6 +17,10 @@ myDatabase::myDatabase(threadId o) : database () {
 bool myDatabase::parseMsg(struct msg *m) {
     bool failFlag = true;
 
+    if( m == NULL) {
+        return failFlag;
+    }
+
     switch( m->cmd ) {
         case NOP:
             break;
@@ -50,6 +54,7 @@ bool myDatabase::parseMsg(struct msg *m) {
             // 
             break;
         case UNSUB:
+            (subs[m->key]).erase(m->sender);
             // 
             // TODO Delete this sender from the subscribe list, no message.
             // 
@@ -84,6 +89,11 @@ bool myDatabase::add(std::string k, std::string v) {
                 // 
                 // TODO Send message to subscriber here
                 // 
+                struct msg *m = mkMsg(NO_ONE, SET, k.c_str(), v.c_str() );
+                // 
+                // ... send it.
+                // 
+                pushQueue( tasks[f], (void *)m );
             }
         }
     }

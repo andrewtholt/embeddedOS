@@ -56,6 +56,7 @@ void thread2(void) {
 
         if( queueEmpty( tasks[THREAD2])== false ) {
             printf("\nI have work\n");
+            printf("\t%d\n", pool.count);
 
             struct msg *ptr = (struct msg *)popQueue( tasks[THREAD2] );
             displayMsg( ptr );
@@ -92,6 +93,7 @@ void thread3(void) {
         printf("\n\rthread 3");
         if( queueEmpty( tasks[THREAD3])== false ) {
             printf("\nI have work\n");
+            printf("\t%d\n", pool.count);
             struct msg *ptr = (struct msg *)popQueue( tasks[iam] );
             displayMsg( ptr );
             failFlag = dbParseMsg(mydb, ptr);
@@ -106,6 +108,7 @@ int main() {
     initThreadTable();
 
     run_queue_head = run_queue_tail = NO_THREAD;
+
     stack_swap_start = (STR) &i;
 
     if (!setjmp(new_thread_start_buff)) {
