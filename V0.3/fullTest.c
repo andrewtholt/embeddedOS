@@ -11,6 +11,7 @@
 #include "msg.h"
 // #include "parseMsg.h"
 
+int delay=500;
 
 void thread1(void) {
     int count=0;
@@ -24,7 +25,7 @@ void thread1(void) {
         } else {
             printf("\n\rthread 1:Odd\n");
         }
-        yield();
+        yieldInMs(delay);
     }
 }
 
@@ -66,7 +67,7 @@ void thread2(void) {
             failFlag = dbParseMsg(mydb, ptr);
         }
 
-        yield();
+        yieldInMs(delay);
     }
 }
 
@@ -98,7 +99,7 @@ void thread3(void) {
             displayMsg( ptr );
             failFlag = dbParseMsg(mydb, ptr);
         }
-        yield();
+        yieldInMs(delay);
     }
 }
 
@@ -115,7 +116,7 @@ int main() {
         /* starts three threads */
 
         startNewThread(thread3);
-        startNewThread(thread1); // should error-check return value.
+//        startNewThread(thread1); // should error-check return value.
         startNewThread(thread2);
         swapThreadBlock();
     }

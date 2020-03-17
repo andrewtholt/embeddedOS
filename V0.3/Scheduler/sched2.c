@@ -142,6 +142,12 @@ void swapInThread() {
     longjmp(cpr->swapThreadBuff, 1);
 }
 
+void swapThreadInMs(int ms) {
+
+    usleep(ms * 1000);
+    swapThread();
+}
+
 void swapThread() {
     int next_thread;
     next_thread = thread[run_queue_head].next_thread;

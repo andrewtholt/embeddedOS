@@ -31,12 +31,12 @@ struct msg {
 };
 using namespace std;
 
-map<string, queue<struct msg> * >  pipe;
+map<string, queue<struct msg> * >  Pipe;
 
 bool threadReady(string name) {
     bool ready = false;
 
-    if ( pipe.count(name) > 0) {
+    if ( Pipe.count(name) > 0) {
         ready = true;
     } else {
         ready = false;
@@ -94,7 +94,7 @@ void thread2(void) {
 
     waitUntilReady("THREAD3");
 
-    queue<struct msg> *t3Q = pipe["THREAD3"];
+    queue<struct msg> *t3Q = Pipe["THREAD3"];
 
     dataOut.cmd = PING;
     strcpy(dataOut.key, "TEST");
@@ -115,7 +115,7 @@ void thread3(void) {
     struct msg dataIn;
 
     queue<struct msg> *myQ = new queue<struct msg>;
-    pipe["THREAD3"] = myQ;
+    Pipe["THREAD3"] = myQ;
 
     while (true) {
         //

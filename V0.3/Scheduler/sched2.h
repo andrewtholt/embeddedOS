@@ -7,6 +7,7 @@
 
 #include <setjmp.h>
 #include <stdlib.h>
+#include <unistd.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -62,8 +63,10 @@ void     saveThreadGlobals   (void);
 int      swapOutThread       (void);
 void     swapInThread        (void);
 void     swapThread          (void);  // yield
+void     swapThreadInMs      (int);   // yield later
 
 #define yield swapThread
+#define yieldInMs(d) swapThreadInMs(d)
 void     swapThreadBlock     (void); // put curr thread to sleep on event
 void     queueThread          (THREAD_NUM threadNumber);
 void     unqueueThread        (UCHAR new_queue);
