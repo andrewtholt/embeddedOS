@@ -127,8 +127,13 @@ extern "C" {
         const char *ret= tmp.c_str();
         return ret;
     }
+
     bool dbParseMsg(struct myDatabase *db, struct msg *m) {
+        bool failFlag = false ;
         db->parseMsg( m );
+
+        return failFlag ;
+
     }
 
 #ifdef __cplusplus
